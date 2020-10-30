@@ -30,7 +30,7 @@ This application simply helps you to keep the record of your expenses
         <li>due date (optional. if user needs to return the amount / take the amount)
             </br>
             </br>
-            if <strong>credited</strong>: give option of <b>return to</b>
+            if <strong>credited</strong>: give option of <b>return to</b></br>
             if <strong>debited</strong>: give option of <b>recieve from</b>
         </li>
     </ul>
