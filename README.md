@@ -8,3 +8,16 @@ This application simply helps you to keep the record of your expenses
 <li>A proper logout functionality</li>
 <li>Authentication must be done using <strong>JWT</strong> in the backend</li>
 <li>email should be used as the unique identification for the user. i.e. user should be able to login/register using email only.</li>
+<h4>2. Manage Profile</h4>
+<li>User should be given option to view his/her profile</li>
+<li>User should be given option update his/her profile (except for email)
+    <ul></ul>
+    <li>For password, user needs to confirm the current password. then only he/she can update the password.</li>
+</li>
+<h4>3. View Expenses</h4>
+<li>User should be able to see all his/her expenses in monthly order.</li>
+<li>proper detailed data should be displayed to the user in a fine tabular design</li>
+<li>Monthly total expenses and earnings should also be displayed with proper highlights</li>
+<li>there should be categorised (<i>expenses like food/gaming/fuel/etc...</i>) data for expenses displayed in beautiful manner. it should be also monthly.</li>
+<li>A grand total of all till date should also be displayed</li>
+<h4>4. Add Expenses *</h4>
