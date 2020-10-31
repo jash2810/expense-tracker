@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import './LoginForm.scss'
-import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap'
+import { Button, Form, FormGroup, Label, Input, FormText, Alert } from 'reactstrap'
 import Axios from 'axios'
 import { serverPath } from '../../secret'
 
@@ -10,6 +10,7 @@ const LoginForm = () =>{
     const history = useHistory()
     const [email,setEmail]= useState('')
     const [password,setPassword]= useState('')
+    const [error, setError] = useState('')
     
     const filldata= () => {
         var data={
@@ -21,8 +22,11 @@ const LoginForm = () =>{
         Axios.post(serverPath.local + '/auth/login', data)
             .then(res => {
                 if (res.data.success) {
+                    setError("")
                     setEmail("")
                     setPassword("")
+                } else {
+                    setError(res.data.msg)
                 }
             })
             .catch(er => console.log(er))
@@ -33,6 +37,7 @@ const LoginForm = () =>{
     }
     return(
         <div className="container-50">
+            {error ? <Alert color="danger">{error}</Alert> : null}
             <Form>
                 <FormGroup>
                     <Label for="exampleEmail">Email</Label>
