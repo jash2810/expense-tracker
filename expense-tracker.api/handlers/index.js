@@ -1,5 +1,6 @@
 module.exports = {
-    ...require('./user')
+    ...require('./user'),
+    ...require('./auth')
 
 }
 
