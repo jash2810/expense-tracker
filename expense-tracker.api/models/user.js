@@ -29,7 +29,9 @@ const UserSchema = new mongoose.Schema({
             toPerson: {type: String, required: false},
             amount: {type: Number, required: true},
             dueDate: {type: Date, required: false}
-        }]
+        }],
+        // sum total
+        balance: {type: Number, default: 0}
     }
 }, {
     timestamps: true
