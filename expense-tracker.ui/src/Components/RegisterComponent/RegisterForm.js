@@ -1,6 +1,8 @@
+import Axios from 'axios';
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom';
 import { Col, Row, Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import {serverPath} from '../../secret'
 
 
 const RegisterForm = () =>{
@@ -23,11 +25,17 @@ const RegisterForm = () =>{
             dob: dob,
             
         }
-       console.log(data)
-        setEmail("")
-        setPassword("")
-        setName("")
-        setDob("")
+        Axios.post(serverPath.local + '/auth/register', data)
+            .then(res => {
+                if (res.data.success) {
+                    setEmail("")
+                    setPassword("")
+                    setName("")
+                    setDob("")
+                    history.push('/')
+                }
+            })
+        
     }
     const redirectToComponent = (url) => {
         history.push(url)

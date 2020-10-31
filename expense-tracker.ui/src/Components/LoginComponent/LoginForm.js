@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import './LoginForm.scss'
 import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap'
+import Axios from 'axios'
+import { serverPath } from '../../secret'
 
 const LoginForm = () =>{
 
@@ -15,8 +17,15 @@ const LoginForm = () =>{
             password: password
         }
         console.log(data)
-        setEmail("")
-        setPassword("")
+
+        Axios.post(serverPath.local + '/auth/login', data)
+            .then(res => {
+                if (res.data.success) {
+                    setEmail("")
+                    setPassword("")
+                }
+            })
+            .catch(er => console.log(er))
 
     }
     const redirectToComponent= (url) =>{
