@@ -6,7 +6,8 @@ const cookieParser = require('cookie-parser')
 
 const handle = require('./handlers')
 const routes = require('./routes')
-
+//const { route } = require('./routes/auth')
+// const { route} =require('./routes/account')
 
 const app = express()
 // const port = process.env.PORT
@@ -24,6 +25,7 @@ app.use(cookieParser())
 
 app.use('/user', routes.user)
 app.use('/auth', routes.auth)
+app.use('/account',routes.account)
 
 app.use(handle.notFound)
 app.use(handle.errors)
