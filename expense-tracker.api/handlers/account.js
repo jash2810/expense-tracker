@@ -78,33 +78,15 @@ exports.debit = async (req, res, next) => {
 
 exports.search = async (req, res, next) => {
     try {
-        var userId=req.body
+        var { userId } = req.params
        
-        if (mongoose.Types.ObjectId.isValid(userId)) {
+        var user = await db.User.findById(userId)
 
-            var user=await db.User.findById(mongoose.Types.ObjectId(userId))
-            
-            if (user) {
-                res.json({data: user,msg:"user found",success:true})
-            }
-            else{
-                res.json({data: null,msg:"user not found",success:false})
-                
-            }
+        if (user) {
+            res.json({data: user, msg: 'user found', success: true})
+        } else {
+            res.json({data: null, msg: 'user not found', success: false})
         }
-        else {
-            res.json({data: null,msg:"enter valid id",success:true})
-        }
-        
-    } catch (error) {
-        error.status = 400
-        console.log(error);        
-    }
-}
-exports.all = async (req, res, next) => {
-    try {
-        
-        
     } catch (error) {
         error.status = 400
         console.log(error);        
