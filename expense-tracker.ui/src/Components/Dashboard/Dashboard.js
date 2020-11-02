@@ -17,21 +17,19 @@ const Dashboard = () => {
         const [category, setCategory]= useState('')
         const [error, setError] = useState('')
 
-        const addData= () => {
-           // const url="/dashboard"
+        const creditData= () => {
+            const url="/dashboard"
             var data ={
                 description: description,
                 date: date,
                 type:type,
                 source: source,
-                toperson: toperson,
-                category: category,
                 amount: amount,
                 duedate: duedate,
                 
             }
             console.log(data)
-            {/*Axios.post(serverPath.local + '/account/credit',data)
+            Axios.post(serverPath.local + '/account/credit',data)
             .then(res => {
                 if (res.data.success) {
                     history.push(url)
@@ -42,17 +40,49 @@ const Dashboard = () => {
                     setSource("")
                     setAmount("")
                     setDueDate("")
-                    setCategory("")
-                    setToPerson("")
-                    
+            
                 } else {
 
                     setError(res.data.msg)
                 }
             })
-        .catch(er => console.log(er))*/}
+        .catch(er => console.log(er))
         }
    
+        const debitData = () =>{
+            const url="/dashboard"
+            var data ={
+                description: description,
+                date: date,
+                type:type,
+                amount: amount,
+                duedate: duedate,
+                category: category,
+                toperson: toperson
+                
+            }
+            console.log(data)
+            Axios.post(serverPath.local + '/account/debit',data)
+            .then(res => {
+                if (res.data.success) {
+                    history.push(url)
+                    setError("")
+                    setDescription("")
+                    setDate("")
+                    setType("")
+                    setCategory("")
+                    setToPerson("")
+                    setAmount("")
+                    setDueDate("")
+            
+                } else {
+
+                    setError(res.data.msg)
+                }
+            })
+        .catch(er => console.log(er))
+
+        }
     return(
         <div  className="container-50">
             <h1><Badge color="secondary">Expense-Tracker</Badge></h1>
@@ -78,12 +108,36 @@ const Dashboard = () => {
                         <option value={2}>debited</option>
                     </Input>
                 </FormGroup> 
+
+                {type !== 0 ?
+                (    
+                       
+                    <div>
+                        <FormGroup>
+                            <Label for="exampleAmount">Amount</Label>
+                            <Input type="number" name="amount" id="exampleAmount" onChange={(e)=>{setAmount(parseInt(e.target.value))}} />
+                        </FormGroup>
+                        <FormGroup>
+                            <Label for="exampleDueDate">DueDate</Label>
+                            <Input type="date" name="duedate" id="exampleDueDate"  onChange={(e)=>{setDueDate(e.target.value)}}/>
+                        </FormGroup>
+                        {/*<FormGroup>
+                                <Button onClick={()=>creditData()}>Add</Button>  
+                        </FormGroup>*/}
+                    </div>
+                
+                )
+                :
+                ('please select the type')
+            }
             {type === 1 ? 
                 (
                     <FormGroup>
                         <Label for="exampleSource">Source</Label>
                         <Input type="text" name="source" id="exampleSource" onChange={(e)=>{setSource(e.target.value)}} />
+                        <Button onClick={()=>creditData()}>Add</Button>
                     </FormGroup>
+                    
                 )
                 :
                 (
@@ -103,32 +157,15 @@ const Dashboard = () => {
                     </Input>
                         <Label for="examplePerson">ToPerson</Label>
                         <Input type="text" name="person" id="examplePerson"  onChange={(e)=>{setToPerson(e.target.value)}}/>
+
+                        <Button onClick={()=>debitData()}>Add</Button>
                     </FormGroup>
                 )
                 :
                 (null)
             }             
 
-            {type !== 0 ?
-                (            
-                    <div>
-                        <FormGroup>
-                            <Label for="exampleAmount">Amount</Label>
-                            <Input type="number" name="amount" id="exampleAmount" onChange={(e)=>{setAmount(parseInt(e.target.value))}} />
-                        </FormGroup>
-                        <FormGroup>
-                            <Label for="exampleDueDate">DueDate</Label>
-                            <Input type="date" name="duedate" id="exampleDueDate"  onChange={(e)=>{setDueDate(e.target.value)}}/>
-                        </FormGroup>
-                                    
-                        <FormGroup>
-                                <Button onClick={()=>addData()}>Add</Button>  
-                        </FormGroup>
-                    </div>
-                )
-                :
-                ('please select the type')
-            }
+            
         </div>
     )
 }

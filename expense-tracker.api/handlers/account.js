@@ -6,24 +6,26 @@ const { deleteOne } = require('../models/user')
 
 exports.credit = async (req, res, next) => {
     try {
-        var {description,date,source,amount,dueDate,userId}=req.body
+        var {description,date,source,amount,duedate,userId}=req.body
         // dd-mm-yyyy
+        console.log(userId)
         var newDate = new Date(date.split('-')[2] + '-' + date.split('-')[1] +'-'+ date.split('-')[0])
         var newMonth = newDate.getMonth() + 1
         var newYear = newDate.getFullYear()
+       
 
-        var newDueDate = new Date(dueDate.split('-')[2] + '-' + dueDate.split('-')[1] +'-'+ dueDate.split('-')[0])
+        var newDueDate = new Date(duedate.split('-')[2] + '-' + duedate.split('-')[1] +'-'+ duedate.split('-')[0])
         
         var user= await db.User.findByIdAndUpdate(userId, {
             $push: {
                 'account.credited': {
-                    month: newMonth,
+                   month: newMonth,
                     year: newYear,
                     description: description,
                     date: newDate,
                     source: source,
                     amount: amount,
-                    dueDate: dueDate !== '' ? newDueDate : '',
+                    duedate: duedate !== '' ? newDueDate : '',
                 }
             },
             $inc: {
@@ -41,13 +43,13 @@ exports.credit = async (req, res, next) => {
 }
 exports.debit = async (req, res, next) => {
     try {
-        var {description,date,category,toPerson,amount,dueDate,userId}=req.body
+        var {description,date,category,toperson,amount,duedate,userId}=req.body
         // dd-mm-yyyy
         var newDate = new Date(date.split('-')[2] + '-' + date.split('-')[1] +'-'+ date.split('-')[0])
         var newMonth = newDate.getMonth() + 1
         var newYear = newDate.getFullYear()
 
-        var newDueDate = new Date(dueDate.split('-')[2] + '-' + dueDate.split('-')[1] +'-'+ dueDate.split('-')[0])
+        var newDueDate = new Date(duedate.split('-')[2] + '-' + duedate.split('-')[1] +'-'+ duedate.split('-')[0])
         
         var user= await db.User.findByIdAndUpdate(userId, {
             $push: {
@@ -57,9 +59,9 @@ exports.debit = async (req, res, next) => {
                     description: description,
                     date: newDate,
                     category: category,
-                    toPerson: toPerson,
+                    toperson: toperson,
                     amount: amount,
-                    dueDate: dueDate !== '' ? newDueDate : '',
+                    duedate: duedate !== '' ? newDueDate : '',
                 }
             },
             $inc: {
