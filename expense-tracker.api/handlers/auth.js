@@ -47,6 +47,6 @@ exports.register = async (req, res, next) => {
         
     } catch (error) {
         error.status = 400
-        console.log(error);      ''
+        console.log(error);      
     }
 }
