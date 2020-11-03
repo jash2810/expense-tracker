@@ -13,24 +13,20 @@ const LoginForm = () =>{
     const [error, setError] = useState('')
     
     const filldata= () => {
-
-        
         var data={
             email: email,
             password: password
         }
-        var url = '/dashboard'
         console.log(data)
+        const url="/dashboard"
 
         Axios.post(serverPath.local + '/auth/login', data)
             .then(res => {
                 if (res.data.success) {
-                    localStorage.setItem('user', res.data._id)
+                    history.push(url)
                     setError("")
                     setEmail("")
                     setPassword("")
-                    history.push(url)
-                    
                 } else {
                     setError(res.data.msg)
                 }
