@@ -10,8 +10,7 @@ const Dashboard = () => {
         const [type, setType] = useState(1)
         const [description, setDescription]= useState('')
         const [date, setDate]= useState(null)
-        const [amount, setAmount]= useState('')
-        const [duedate, setDueDate]= useState(null)
+        const [amount, setAmount]= useState(0)
         const [source, setSource]= useState()
         const [toperson, setToPerson]= useState('')
         const [category, setCategory]= useState('')
@@ -25,8 +24,7 @@ const Dashboard = () => {
                 type:type,
                 source: source,
                 amount: amount,
-                duedate: duedate,
-                
+                userId: localStorage.getItem('user')
             }
             console.log(data)
             Axios.post(serverPath.local + '/account/credit',data)
@@ -35,11 +33,10 @@ const Dashboard = () => {
                     history.push(url)
                     setError("")
                     setDescription("")
-                    setDate("")
-                    setType("")
+                    setDate()
+                    setType(1)
                     setSource("")
-                    setAmount("")
-                    setDueDate("")
+                    setAmount(0)
             
                 } else {
 
@@ -56,10 +53,9 @@ const Dashboard = () => {
                 date: date,
                 type:type,
                 amount: amount,
-                duedate: duedate,
                 category: category,
-                toperson: toperson
-                
+                toperson: toperson,
+                userId: localStorage.getItem('user')
             }
             console.log(data)
             Axios.post(serverPath.local + '/account/debit',data)
@@ -68,12 +64,11 @@ const Dashboard = () => {
                     history.push(url)
                     setError("")
                     setDescription("")
-                    setDate("")
-                    setType("")
+                    setDate()
+                    setType(1)
                     setCategory("")
                     setToPerson("")
-                    setAmount("")
-                    setDueDate("")
+                    setAmount(0)
             
                 } else {
 
@@ -85,7 +80,7 @@ const Dashboard = () => {
         }
     return(
         <div  className="container-50">
-            <h1><Badge color="secondary">Expense-Tracker</Badge></h1>
+            <h1>Expense-Tracker</h1>
             <h4> <Badge color="secondary">ADD EXPENSE</Badge></h4>
             <Row>
                 <Col>
@@ -104,8 +99,8 @@ const Dashboard = () => {
                 <FormGroup>
                     <Label for="exampleSelectMulti">Type</Label>
                     <Input type="select" name="selectMulti" id="exampleSelectMulti" onChange={(e) => {setType(parseInt(e.target.value))}}>
-                        <option value={1}>credited</option>
-                        <option value={2}>debited</option>
+                        <option value={1} selected={type === 1 ? true : false}>credited</option>
+                        <option value={2} selected={type === 2 ? true : false}>debited</option>
                     </Input>
                 </FormGroup> 
 
@@ -115,11 +110,7 @@ const Dashboard = () => {
                     <div>
                         <FormGroup>
                             <Label for="exampleAmount">Amount</Label>
-                            <Input type="number" name="amount" id="exampleAmount" onChange={(e)=>{setAmount(parseInt(e.target.value))}} />
-                        </FormGroup>
-                        <FormGroup>
-                            <Label for="exampleDueDate">DueDate</Label>
-                            <Input type="date" name="duedate" id="exampleDueDate"  onChange={(e)=>{setDueDate(e.target.value)}}/>
+                            <Input type="number" name="amount" id="exampleAmount" value={amount} onChange={(e)=>{setAmount(parseInt(e.target.value))}} />
                         </FormGroup>
                         {/*<FormGroup>
                                 <Button onClick={()=>creditData()}>Add</Button>  
@@ -135,7 +126,7 @@ const Dashboard = () => {
                     <FormGroup>
                         <Label for="exampleSource">Source</Label>
                         <Input type="text" name="source" id="exampleSource" onChange={(e)=>{setSource(e.target.value)}} />
-                        <Button onClick={()=>creditData()}>Add</Button>
+                        <Button onClick={()=>creditData()} className="mt-2">Add</Button>
                     </FormGroup>
                     
                 )
@@ -158,7 +149,7 @@ const Dashboard = () => {
                         <Label for="examplePerson">ToPerson</Label>
                         <Input type="text" name="person" id="examplePerson"  onChange={(e)=>{setToPerson(e.target.value)}}/>
 
-                        <Button onClick={()=>debitData()}>Add</Button>
+                        <Button onClick={()=>debitData()} className="mt-2">Add</Button>
                     </FormGroup>
                 )
                 :

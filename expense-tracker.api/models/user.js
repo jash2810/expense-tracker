@@ -18,7 +18,6 @@ const UserSchema = new mongoose.Schema({
             date: {type: Date, default: Date.now},
             source: {type: String, required: false},
             amount: {type: Number},
-            dueDate: {type: Date, required: false}
         }],
         debited: [{
             month: {type: Number, required: false},
@@ -28,7 +27,6 @@ const UserSchema = new mongoose.Schema({
             category: {type: String, default: 'none', required: true},
             toPerson: {type: String, required: false},
             amount: {type: Number, required: true},
-            dueDate: {type: Date, required: false}
         }],
         // sum total
         balance: {type: Number, default: 0}

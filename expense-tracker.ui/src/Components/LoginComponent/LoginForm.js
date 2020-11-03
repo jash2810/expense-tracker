@@ -22,8 +22,11 @@ const LoginForm = () =>{
 
         Axios.post(serverPath.local + '/auth/login', data)
             .then(res => {
-                if (res.data.success) {
-                    history.push(url)
+                if (res.data.success) {                    
+                    localStorage.setItem('user', res.data.data._id)
+                    setTimeout(function() {
+                        window.location.href = url
+                    }, 1000)
                     setError("")
                     setEmail("")
                     setPassword("")

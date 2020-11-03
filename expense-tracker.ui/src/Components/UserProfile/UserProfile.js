@@ -1,5 +1,5 @@
 import Axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Button, Jumbotron } from 'reactstrap'
 import secret from '../../secret'
@@ -13,10 +13,10 @@ const UserProfile = () => {
     const [editProfile, setEditProfile] = useState(false)
     useEffect(() => {
 
-        Axios.get(secret.serverPath.local + '/search/' + localStorage.getItem('user'))
+        Axios.get(secret.serverPath.local + '/account/search/' + localStorage.getItem('user'))
             .then(res => {
                 if (res.data.success) {
-                    setUser(res.data)
+                    setUser(res.data.data)
                 }
             })
             .catch(er => console.log(er))
@@ -31,16 +31,24 @@ const UserProfile = () => {
                 )
                 :
                 (
-                    <Jumbotron>
-                        <h1 className="display-3">{user.details.name}</h1>
-                        <p className="lead">{user.cred.email}</p>
-                        <hr className="my-2" />
-                        <p>Balance: {user.account.balance} &#x20B9;</p>
-                        <p className="lead">
-                            <Button color="primary" className="mr-3" onClick={() => {history.push('/dashboard')}}>Dashboard</Button>
-                            <Button color="secondary" onClick={() => {setEditProfile(true)}}>Edit</Button>
-                        </p>
-                    </Jumbotron>
+                    <Fragment>
+                        {user ? 
+                            (
+                                <Jumbotron>
+                                    <h1 className="display-3">{user.details.name}</h1>
+                                    <p className="lead">{user.cred.email}</p>
+                                    <hr className="my-2" />
+                                    <p>Balance: {user.account.balance} &#x20B9;</p>
+                                    <p className="lead">
+                                        <Button color="primary" className="mr-3" onClick={() => {history.push('/dashboard')}}>Dashboard</Button>
+                                        <Button color="secondary" onClick={() => {setEditProfile(true)}}>Edit</Button>
+                                    </p>
+                                </Jumbotron>
+                            )
+                            :
+                            null
+                        }
+                    </Fragment>
                 )
             }
         </div>
