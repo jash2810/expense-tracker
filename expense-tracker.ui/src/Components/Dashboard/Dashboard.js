@@ -26,14 +26,15 @@ const Dashboard = () => {
                 amount: amount,
                 userId: localStorage.getItem('user')
             }
-            console.log(data)
+            console.log(date)
+            console.log(typeof(date))
             Axios.post(serverPath.local + '/account/credit',data)
             .then(res => {
                 if (res.data.success) {
-                    history.push(url)
+                    // history.push(url)
                     setError("")
                     setDescription("")
-                    setDate()
+                    setDate(null)
                     setType(1)
                     setSource("")
                     setAmount(0)
@@ -57,14 +58,15 @@ const Dashboard = () => {
                 toperson: toperson,
                 userId: localStorage.getItem('user')
             }
-            console.log(data)
+            console.log(date)
+            console.log(typeof(date))
             Axios.post(serverPath.local + '/account/debit',data)
             .then(res => {
                 if (res.data.success) {
-                    history.push(url)
+                    // history.push(url)
                     setError("")
                     setDescription("")
-                    setDate()
+                    setDate(null)
                     setType(1)
                     setCategory("")
                     setToPerson("")
@@ -86,13 +88,13 @@ const Dashboard = () => {
                 <Col>
                     <FormGroup style={{margin:"auto"}}>
                         <Label for="exampleText">Description</Label>
-                        <Input type="textarea" name="text" id="exampleText" onChange={(e)=>{setDescription(e.target.value)}}/>
+                        <Input type="textarea" name="text" id="exampleText" value={description} onChange={(e)=>{setDescription(e.target.value)}}/>
                     </FormGroup>
                 </Col>
                 <Col>
                     <FormGroup>
                         <Label for="exampleDate">Date</Label>
-                        <Input type="date" name="date" id="exampleDate" onChange={(e)=>{setDate(e.target.value)}}/>
+                        <Input type="date" name="date" id="exampleDate" value={date} onChange={(e)=>{setDate(e.target.value); console.log(e.target.value, typeof(e.target.value))}}/>
                     </FormGroup>
                 </Col>
             </Row>                        
@@ -125,7 +127,7 @@ const Dashboard = () => {
                 (
                     <FormGroup>
                         <Label for="exampleSource">Source</Label>
-                        <Input type="text" name="source" id="exampleSource" onChange={(e)=>{setSource(e.target.value)}} />
+                        <Input type="text" name="source" value={source} id="exampleSource" onChange={(e)=>{setSource(e.target.value)}} />
                         <Button onClick={()=>creditData()} className="mt-2">Add</Button>
                     </FormGroup>
                     
@@ -147,7 +149,7 @@ const Dashboard = () => {
 
                     </Input>
                         <Label for="examplePerson">ToPerson</Label>
-                        <Input type="text" name="person" id="examplePerson"  onChange={(e)=>{setToPerson(e.target.value)}}/>
+                        <Input type="text" name="person" value={toperson} id="examplePerson"  onChange={(e)=>{setToPerson(e.target.value)}}/>
 
                         <Button onClick={()=>debitData()} className="mt-2">Add</Button>
                     </FormGroup>

@@ -1,23 +1,22 @@
 const { Model } = require('mongoose')
 const db = require('../models')
 const mongoose = require('mongoose')
+const seeds = require('../seeds/user')
 
 const { deleteOne } = require('../models/user')
 
 exports.credit = async (req, res, next) => {
     try {
         var {description,date,source,amount,userId}=req.body
-        // dd-mm-yyyy
-        console.log(userId)
-        var newDate = new Date(date.split('-')[2] + '-' + date.split('-')[1] +'-'+ date.split('-')[0])
-        var newMonth = newDate.getMonth() + 1
-        var newYear = newDate.getFullYear()
         
+        var dateArr = date.split('-')
+        // yyyy-mm-dd
+        console.log(dateArr)
+        var newDate = new Date(parseInt(dateArr[0]), parseInt(dateArr[1]) - 1, parseInt(dateArr[2]) + 1)
+                
         var user= await db.User.findByIdAndUpdate(userId, {
             $push: {
                 'account.credited': {
-                   month: newMonth,
-                    year: newYear,
                     description: description,
                     date: newDate,
                     source: source,
@@ -40,16 +39,13 @@ exports.credit = async (req, res, next) => {
 exports.debit = async (req, res, next) => {
     try {
         var {description,date,category,toperson,amount,userId}=req.body
-        // dd-mm-yyyy
-        var newDate = new Date(date.split('-')[2] + '-' + date.split('-')[1] +'-'+ date.split('-')[0])
-        var newMonth = newDate.getMonth() + 1
-        var newYear = newDate.getFullYear()        
-        console.log(userId);
+        
+        var dateArr = date.split('-')
+        var newDate = new Date(parseInt(dateArr[0]), parseInt(dateArr[1]) - 1, parseInt(dateArr[2]) + 1)
+        
         var user= await db.User.findByIdAndUpdate(userId, {
             $push: {
                 'account.debited': {
-                    month: newMonth,
-                    year: newYear,
                     description: description,
                     date: newDate,
                     category: category,
@@ -85,5 +81,69 @@ exports.search = async (req, res, next) => {
     } catch (error) {
         error.status = 400
         console.log(error);        
+    }
+}
+
+exports.seedCredited = async (req, res, next) => {
+    try {
+        // var {description,date,source,amount,userId}=req.body
+
+        for (let i = 0; i < seeds.credited.length; i++) {
+            const c = seeds.credited[i];
+            var dateArr = c.date.split('-')
+            // yyyy-mm-dd
+            console.log(dateArr)
+            var newDate = new Date(parseInt(dateArr[0]), parseInt(dateArr[1]) - 1, parseInt(dateArr[2]) + 1)
+                    
+            var user = await db.User.findByIdAndUpdate(c.userId, {
+                $push: {
+                    'account.credited': {
+                        description: c.description,
+                        date: newDate,
+                        source: c.source,
+                        amount: c.amount,
+                    }
+                },
+                $inc: {
+                    'account.balance': c.amount
+                }
+            })   
+        }
+        
+    } catch (error) {
+        error.status = 400
+        console.log(error);
+    }
+}
+
+exports.seedDebited = async (req, res, next) => {
+    try {
+        // var {description,date,source,amount,userId}=req.body
+
+        for (let i = 0; i < seeds.debited.length; i++) {
+            const d = seeds.debited[i];
+            var dateArr = d.date.split('-')
+            // yyyy-mm-dd
+            console.log(dateArr)
+            var newDate = new Date(parseInt(dateArr[0]), parseInt(dateArr[1]) - 1, parseInt(dateArr[2]) + 1)
+                    
+            var user = await db.User.findByIdAndUpdate(d.userId, {
+                $push: {
+                    'account.debited': {
+                        description: d.description,
+                        date: newDate,
+                        category: d.category,
+                        amount: d.amount,
+                    }
+                },
+                $inc: {
+                    'account.balance': -d.amount
+                }
+            })   
+        }
+        
+    } catch (error) {
+        error.status = 400
+        console.log(error);
     }
 }
