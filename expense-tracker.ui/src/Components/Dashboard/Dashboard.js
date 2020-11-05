@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Badge, Button, Col, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, Label, Row } from 'reactstrap'
 import { serverPath } from '../../secret'
+import UserProfile from '../UserProfile/UserProfile'
 
 const Dashboard = () => {
 
@@ -77,6 +78,9 @@ const Dashboard = () => {
             })
         .catch(er => console.log(er))
 
+        }
+        const UserProfile =() =>{
+            history.push('/profile')
         }
     return(
         <div  className="container-50">
@@ -155,7 +159,7 @@ const Dashboard = () => {
                 :
                 (null)
             }             
-
+            <Button color="link" onClick={()=>UserProfile()}>Profile</Button>
             
         </div>
     )

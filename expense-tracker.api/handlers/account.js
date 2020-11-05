@@ -87,3 +87,11 @@ exports.search = async (req, res, next) => {
         console.log(error);        
     }
 }
+exports.filter = async(req, res, next) => {
+    try {
+        
+    } catch (error) {
+        error.status = 400
+        console.log(error);    
+    }
+}
