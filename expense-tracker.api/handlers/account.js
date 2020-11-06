@@ -147,3 +147,29 @@ exports.seedDebited = async (req, res, next) => {
         console.log(error);
     }
 }
+exports.filter = async (req, res, next) => {
+    try {
+        var userId = req.params.id 
+        var {start,end} = req.body
+
+        var startDate= new Date(start).toISOString()
+        var endDate= new Date(end).toISOString()
+        console.log(startDate)
+        console.log(endDate)
+        
+        var user = await db.User.find({
+            "_id": userId,
+            "account.credited": { 
+              "$elemMatch": {  date:{"$gte": start,"$lt": end}  }
+           }
+       
+         } )//.then(doc =>{
+            
+             res.json({data:user, msg: 'user found', success: true})
+        // })
+         console.log(user)
+    } catch (error) {
+        error.status = 400
+        console.log(error);        
+    }
+}
