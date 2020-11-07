@@ -161,13 +161,27 @@ exports.filter = async (req, res, next) => {
         var endNewDate = new Date(parseInt(endDate[0]),parseInt(endDate[1])-1,parseInt(endDate[2])+1)
 
         var user = await db.User.findById(userId,{account: 1,details: 1} )
-        var credited=[],debited=[]
+        var credited=[],debited=[],totalCreditedAmount=0,totalDebitedAmount=0
 
-        credited = user.account.credited.filter(c =>{return(c.date > startNewDate && c.date < endNewDate)})
-        debited = user.account.debited.filter(d =>{return(d.date > startNewDate && d.date < endNewDate)})
+        user.account.credited.forEach(c => {
+            if (c.date > startNewDate && c.date < endNewDate) {
+                credited.push(c)
+                totalCreditedAmount=totalCreditedAmount+c.amount
+            }
+            
+        });
+        
+        user.account.debited.forEach(d => {
+            if (d.date > startNewDate && d.date < endNewDate) {
+                debited.push(d)
+                totalDebitedAmount=totalDebitedAmount+d.amount
+            }
+            
+        });
+       
 
-         res.json({credited:credited,debited:debited, msg: 'user found', success: true})
-      
+        res.json({totalCreditedAmount: totalCreditedAmount,totalDebitedAmount:totalDebitedAmount,credited:credited,debited:debited, msg: 'user found', success: true})
+         
         
     } catch (error) {
         error.status = 400
