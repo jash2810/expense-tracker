@@ -157,7 +157,7 @@ const Dashboard = () => {
                 :
                 (null)
             }             
-
+        <Button color="link" onClick={()=>{history.push('/profile')}}>Profile</Button>
             
         </div>
     )

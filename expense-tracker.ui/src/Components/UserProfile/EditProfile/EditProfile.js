@@ -32,7 +32,7 @@ const EditProfile = ({user, setEditProfile}) => {
                     <Label for="name">Name</Label>
                     <Input type="text" name="name" id="name" placeholder="Enter Name" value={name} onChange={(e) => {setName(e.target.value)}} />
                 </FormGroup>
-                <Button color="primary" onClick={handleUpdate}>Submit</Button>
+                <Button color="primary" className="mr-3" onClick={handleUpdate}>Submit</Button>
                 <Button color="secondary" onClick={() => {setEditProfile(false)}}>Back</Button>
                 </Form>
         </div>
