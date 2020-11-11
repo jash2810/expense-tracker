@@ -150,14 +150,15 @@ exports.seedDebited = async (req, res, next) => {
 }
 exports.filter = async (req, res, next) => {
     try {
-        var userId = req.params.id 
-        var start = req.body.start
-        var end = req.body.end
-
-        var startDate= start.split('-')
+        
+        var {fromdate,todate,userId} = req.body
+        
+        console.log(fromdate)
+        console.log(todate)
+        var startDate= fromdate.split('-')
         var startNewDate = new Date(parseInt(startDate[0]),parseInt(startDate[1])-1,parseInt(startDate[2])+1)
        
-        var endDate= end.split('-')
+        var endDate= todate.split('-')
         var endNewDate = new Date(parseInt(endDate[0]),parseInt(endDate[1])-1,parseInt(endDate[2])+1)
 
         var user = await db.User.findById(userId,{account: 1,details: 1} )
