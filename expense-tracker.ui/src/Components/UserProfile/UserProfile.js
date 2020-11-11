@@ -1,7 +1,7 @@
 import Axios from 'axios'
 import React, { Fragment, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { Button, Jumbotron } from 'reactstrap'
+import { Button, Jumbotron, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 import secret from '../../secret'
 import EditProfile from './EditProfile/EditProfile'
 
@@ -11,6 +11,8 @@ const UserProfile = () => {
 
     const [user, setUser] = useState(null)
     const [editProfile, setEditProfile] = useState(false)
+
+   
     useEffect(() => {
 
         Axios.get(secret.serverPath.local + '/account/search/' + localStorage.getItem('user'))
@@ -51,6 +53,7 @@ const UserProfile = () => {
                     </Fragment>
                 )
             }
+                   
         </div>
     )
 }

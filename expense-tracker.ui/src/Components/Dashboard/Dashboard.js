@@ -1,10 +1,15 @@
 import Axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { Badge, Button, Col, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, Label, Row } from 'reactstrap'
+import { Badge, Button, Col, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Row, Table } from 'reactstrap'
+
 import { serverPath } from '../../secret'
 
-const Dashboard = () => {
+const Dashboard = (props) => {
+        const {
+                buttonLabel,
+                className
+        } = props;
 
         const history = useHistory()
         const [type, setType] = useState(1)
@@ -15,6 +20,39 @@ const Dashboard = () => {
         const [toperson, setToPerson]= useState('')
         const [category, setCategory]= useState('')
         const [error, setError] = useState('')
+        const [modal, setModal] = useState(false);
+        const [viewData, setviewData]=useState(null);
+        const [allTransactions, setAllTransactions] = useState([]);
+
+        const toggle = () => setModal(!modal);
+
+        const viewRecords = () => {
+
+             var data= localStorage.getItem('user')
+            Axios.get(serverPath.local + '/account/search/' + data)
+            .then(res => {
+                if (res.data.success) {
+                    var debited = res.data.data.account.debited
+                    var credited = res.data.data.account.credited
+                    var merged = [...debited,...credited]
+                    
+                    merged.sort(function(a,b){
+                        return new Date(b.date) - new Date(a.date);
+                      });
+                    console.log(merged)
+                    setAllTransactions(merged)
+                    
+                    setviewData(res.data.data)
+                    
+                } else {
+
+                    setError(res.data.msg)
+                }
+            })
+        .catch(er => console.log(er))
+        
+        }
+        
 
         const creditData= () => {
             const url="/dashboard"
@@ -80,11 +118,18 @@ const Dashboard = () => {
         .catch(er => console.log(er))
 
         }
+        useEffect(() =>{
+            viewRecords()
+        }, [])
     return(
         <div  className="container-50">
-            <h1>Expense-Tracker</h1>
-            <h4> <Badge color="secondary">ADD EXPENSE</Badge></h4>
-            <Row>
+            <h1><Badge color="secondary">Expense Tracker</Badge></h1>
+            
+            <Button color="secondary" onClick={toggle}>{buttonLabel}Add expense</Button>
+            <Modal isOpen={modal} toggle={toggle} fade='false' style={{display:"block"}} className={className}>
+                <ModalHeader toggle={toggle}>Add Expense</ModalHeader>
+                <ModalBody>
+                <Row>
                 <Col>
                     <FormGroup style={{margin:"auto"}}>
                         <Label for="exampleText">Description</Label>
@@ -157,7 +202,53 @@ const Dashboard = () => {
                 :
                 (null)
             }             
-        <Button color="link" onClick={()=>{history.push('/profile')}}>Profile</Button>
+                </ModalBody>
+                <ModalFooter>
+                  <Button color="secondary" onClick={toggle}>Cancel</Button>
+                </ModalFooter>
+            </Modal>
+            <Row>
+                <Col>
+                 <Button color="link" onClick={()=>{history.push('/profile')}}>Profile</Button>
+                </Col>
+            </Row>
+
+            {viewData ?
+                (
+                    <Table>
+                        <thead>
+                            <tr>
+                            <th>#</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            <th>Category</th>
+                            <th>Source</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {allTransactions.map((d,key) => (
+                                <tr>
+                                <th scope="row">1</th>
+                                <td>{type}</td>
+                                <td>{d.description}</td>
+                                <td>{d.amount}</td>
+                                <td>{d.date}</td>
+                                <td>{d.category}</td>
+                                <td>{d.source}</td>
+
+                                </tr>
+                            ))}
+                        </tbody>
+                    </Table> 
+                )
+                :
+                (
+                    <h1>loading...</h1>
+                )
+            }
+            
             
         </div>
     )
