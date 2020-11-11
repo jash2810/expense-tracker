@@ -73,7 +73,7 @@ exports.search = async (req, res, next) => {
         var { userId } = req.params
        
         var user = await db.User.findById(userId)
-        console.log(user)
+        console.log("hi")
         if (user) {
             res.json({data:user, msg: 'user found', success: true})
         } else {

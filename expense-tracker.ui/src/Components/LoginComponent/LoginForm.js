@@ -61,6 +61,7 @@ const LoginForm = () =>{
                     <Button color="link" onClick={()=>redirectToComponent('/register')}>Signup</Button>
                 </FormGroup>
             </Form>
+            
         </div>
     )
 }
