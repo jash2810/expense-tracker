@@ -23,7 +23,7 @@ const UserProfile = () => {
             })
             .catch(er => console.log(er))
 
-    }, [])
+    }, [editProfile])
 
     return(
         <div className={"container mt-5"}>

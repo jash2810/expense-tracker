@@ -12,7 +12,7 @@ const EditProfile = ({user, setEditProfile}) => {
             userId: user._id,
             name: name
         }
-        Axios.put(secret.serverPath.local + '/user/update', data)
+        Axios.put(secret.serverPath.local + '/user/profile', data)
             .then(res => {
                 if (res.data.success) {
                     setEditProfile(false)
